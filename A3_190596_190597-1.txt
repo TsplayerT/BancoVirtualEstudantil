@@ -1,0 +1,185 @@
+//RA:190596-Beatriz Tonico Costa Alves 
+//RA:190597-Caíque Soares Rocha da Silva
+
+#include <stdio.h>
+#include <locale.h>
+#include <conio.h>
+#include <stdlib.h>
+
+int main()
+{
+	setlocale(LC_ALL,"Portuguese");
+	
+	int resp, subMenu;
+	int RA, senha, senha1 = 0, senha2;
+	float depos, saque, conta = 0, despesas;
+	
+	printf("Cadastre-se para começar!\n\n");
+	do //Válidar o Ra, não aceitando valores menores que zero.
+	{
+		printf("Digite seu RA: ");
+		scanf("%i", &RA);
+		
+		if (RA < 1)
+			printf("O RA precisa ser maior que zero!\n\n");
+		else
+			break;
+	} while (1);
+	do //caso as senhas digitadas não sejam iguais o programa pede para digitar novamente.
+	{
+		do //Se a senha digitada for zero ou menor o programa digita inválido e pede para digitar novamente.
+		{
+			printf("Digite a senha a ser cadastrada: ");
+			scanf("%i", &senha1);
+			
+			if (senha1 < 1)
+				printf("A senha precisa ser maior que zero!\n\n");
+			else
+				break;
+		} while (1);
+	
+		printf("Digite a senha novamente: ");
+		scanf("%i", &senha2);
+		
+		if (senha2 != senha1)
+			printf("As senhas digitadas não coincidem, favor digite a mesma senha nos campos para ser válidada!\n\n");
+		else
+			break;
+	} while (1);
+	
+	senha = senha2;
+	
+	printf("\nSeus dados atuais são:\n\nRA: %i\nSenha: %i\n\nPressione qualquer tecla para continuar...\n", RA, senha);
+	getch();
+	system("cls");
+	
+	do //Enquanto a resposta for diferente de 6 o programa continuar sendo executado e em loop.
+	{
+		printf("Bem Vindo usuário %i!\n\n", RA);
+		printf("1 - Depositar\n");
+		printf("2 - Retirada\n");
+		printf("3 - Pagamento de Contas\n");
+		printf("4 - Saldo\n");
+		printf("5 - Trocar senha\n");
+		printf("6 - Sair\n\n");
+		printf("Digite a operação que deseja realizar: ");
+		
+		scanf("%i", &resp);
+		
+		switch (resp)
+		{
+			case 1:
+					printf("Digite o valor que deseja depositar: ");
+					scanf("%f", &depos);
+					
+					if (depos <= 0)
+						printf("Depositos não podem ser negativos e nulos!\n\n");
+					else
+					{
+						conta += depos;
+						break;
+					}
+			break;
+			case 2:
+					printf("Digite o valor que deseja retirar: ");
+					scanf("%f", &saque);
+					
+					if (saque <= 0)
+						printf("O saque não pode realizado com valores negativos ou nulos!\n\n");
+					else
+					{
+						printf("Digite sua senha para finalizar a operação: ");
+						scanf("%i", &senha1);
+						if (senha1 == senha)
+							conta -= saque;
+						else
+							printf("Senha inválida, operação cancelada!\n");
+						break;
+					}
+			break;
+			case 3:
+				system("cls");
+				printf("1 - Agua, Luz e Gás\n");
+				printf("2 - Outros\n");
+				printf("Digite a operação que deseja realizar: ");
+				scanf("%i", &subMenu);
+				if (subMenu == 1 || subMenu == 2)
+				{
+					printf("Digite o valor da conta a pagar: ");
+					scanf("%f", &despesas);
+					if (conta > 0 && conta > despesas)
+					{
+						printf("Digite sua senha para finalizar a operação: ");
+						scanf("%i", &senha1);
+						if (senha1 == senha)
+							conta -= despesas;
+						else
+							printf("Senha inválida, operação cancelada!\n");
+					}
+					else
+					{
+						printf("Seu saldo é insuficiente para pagar essa conta!\n");
+						printf("\nPressione qualquer tecla para continuar...\n");
+						getch();
+					}
+				}
+				else
+				{
+					printf("Operação inválida!");
+					printf("\nPressione qualquer tecla para continuar...\n");
+					getch();
+				}
+			break;
+			case 4:
+				printf("O saldo atual da sua conta é: %.2f\n\n", conta);
+			break;
+			case 5:
+				do //Enquanto a senha atual estiver errada o programa pede para digitar a senha novamente.
+				{
+					printf("Digite zero para sair\n ");
+					printf("Digite a senha atual: ");
+					scanf("%i", &senha1);
+					
+					if(senha1==0)
+					break;
+					
+					if (senha1 != senha)
+						printf("A senha digitada inválida!\n\n");
+					else
+					{
+						printf("Digite a nova senha: ");
+						scanf("%i", &senha2);
+						
+						if (senha1 == senha2)
+							printf("A senha já foi utilizada, por favor digite uma diferente!\n\n");
+						else
+						{
+							senha = senha2;
+							break;
+						}
+					}
+				} while (1);
+			break;
+			case 6:
+				system("cls");
+				printf("Saldo: %.2f\n", conta);
+				if (conta > 0)
+					printf("Conta preferencial!");
+				else if (conta < 0)
+					printf("Conta estourada!");
+				else
+					printf("Conta zerada!");
+					
+			break;
+			default:
+				printf("Operação inválida, por favor digite novamente!");
+				printf("\nPressione qualquer tecla para continuar...\n");
+				getch();
+				system("cls");
+			break;
+		}
+		
+	} while(resp != 6);
+	
+	return 0;
+}
